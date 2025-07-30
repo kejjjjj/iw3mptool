@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{3d81458b-11e1-4524-9249-893216c01ed0}</ProjectGuid>
+    <RootNamespace>iw3mptool</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;IW3MPTOOL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <OutputFile>D:\Activision\CallOfDuty4\miles\iw3mptool.asi</OutputFile>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories);$(SolutionDir)w$(Platform)\lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;IW3MPTOOL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <OutputFile>D:\Activision\CallOfDuty4\miles\iw3mptool.asi</OutputFile>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories);$(SolutionDir)w$(Platform)\lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;IW3MPTOOL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;IW3MPTOOL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="cg\cg_angles.hpp" />
+    <ClInclude Include="cg\cg_cleanup.hpp" />
+    <ClInclude Include="cg\cg_hooks.hpp" />
+    <ClInclude Include="cg\cg_init.hpp" />
+    <ClInclude Include="cg\cg_local.hpp" />
+    <ClInclude Include="cg\cg_memory.hpp" />
+    <ClInclude Include="cg\cg_offsets.hpp" />
+    <ClInclude Include="cmd\cmd.hpp" />
+    <ClInclude Include="cm\cm_brush.hpp" />
+    <ClInclude Include="cm\cm_debug.hpp" />
+    <ClInclude Include="cm\cm_entity.hpp" />
+    <ClInclude Include="cm\cm_export.hpp" />
+    <ClInclude Include="cm\cm_model.hpp" />
+    <ClInclude Include="cm\cm_renderer.hpp" />
+    <ClInclude Include="cm\cm_terrain.hpp" />
+    <ClInclude Include="cm\cm_typedefs.hpp" />
+    <ClInclude Include="cod4x\cod4x.hpp" />
+    <ClInclude Include="com\com_channel.hpp" />
+    <ClInclude Include="com\com_error.hpp" />
+    <ClInclude Include="com\com_vector.hpp" />
+    <ClInclude Include="dvar\dvar.hpp" />
+    <ClInclude Include="fs\fs_globals.hpp" />
+    <ClInclude Include="fs\fs_io.hpp" />
+    <ClInclude Include="global\defs.hpp" />
+    <ClInclude Include="g\g_spawn.hpp" />
+    <ClInclude Include="r\backend\rb_endscene.hpp" />
+    <ClInclude Include="r\r_drawactive.hpp" />
+    <ClInclude Include="r\r_drawtools.hpp" />
+    <ClInclude Include="r\r_endscene.hpp" />
+    <ClInclude Include="scr\scr_functions.hpp" />
+    <ClInclude Include="sys\sys_thread.hpp" />
+    <ClInclude Include="utils\engine.hpp" />
+    <ClInclude Include="utils\hook.hpp" />
+    <ClInclude Include="utils\resolution.hpp" />
+    <ClInclude Include="utils\typedefs.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cg\cg_angles.cpp" />
+    <ClCompile Include="cg\cg_cleanup.cpp" />
+    <ClCompile Include="cg\cg_hooks.cpp" />
+    <ClCompile Include="cg\cg_init.cpp" />
+    <ClCompile Include="cg\cg_memory.cpp" />
+    <ClCompile Include="cmd\cmd.cpp" />
+    <ClCompile Include="cm\cm_brush.cpp" />
+    <ClCompile Include="cm\cm_debug.cpp" />
+    <ClCompile Include="cm\cm_entity.cpp" />
+    <ClCompile Include="cm\cm_export.cpp" />
+    <ClCompile Include="cm\cm_model.cpp" />
+    <ClCompile Include="cm\cm_renderer.cpp" />
+    <ClCompile Include="cm\cm_terrain.cpp" />
+    <ClCompile Include="cm\cm_typedefs.cpp" />
+    <ClCompile Include="cod4x\cod4x.cpp" />
+    <ClCompile Include="com\com_channel.cpp" />
+    <ClCompile Include="com\com_vector.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="dvar\dvar.cpp" />
+    <ClCompile Include="fs\fs_globals.cpp" />
+    <ClCompile Include="fs\fs_io.cpp" />
+    <ClCompile Include="g\g_spawn.cpp" />
+    <ClCompile Include="r\backend\rb_endscene.cpp" />
+    <ClCompile Include="r\r_drawactive.cpp" />
+    <ClCompile Include="r\r_drawtools.cpp" />
+    <ClCompile Include="r\r_endscene.cpp" />
+    <ClCompile Include="scr\scr_functions.cpp" />
+    <ClCompile Include="sys\sys_thread.cpp" />
+    <ClCompile Include="utils\mh\buffer.c" />
+    <ClCompile Include="utils\mh\hde\hde32.c" />
+    <ClCompile Include="utils\mh\hde\hde64.c" />
+    <ClCompile Include="utils\mh\hook.c" />
+    <ClCompile Include="utils\mh\trampoline.c" />
+    <ClCompile Include="utils\resolution.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
