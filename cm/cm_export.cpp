@@ -91,8 +91,7 @@ void CM_MapExport()
 	if (writer.IO_Write(map.str())) {
 		const std::string str = std::format("^1{} export courtesy of the great\n^2xkejj^1.\n", name);
 		Com_Printf(str.c_str());
-	}
-	else {
+	} else {
 		Com_Printf("^1Failed!\n");
 	}
 

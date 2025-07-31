@@ -8,7 +8,7 @@
 
 #include <algorithm>
 #include <ranges>
-#include <iostream>
+#include <array>
 
 void CM_ShowCollisionFilter()
 {
@@ -27,6 +27,7 @@ void CM_ShowCollisionFilter()
 
 	for (int i = 1; i < num_args; i++) {
 		filter += *(cmd_args->argv[cmd_args->nesting] + i);
+		filter += " ";
 	}
 
 	CM_LoadAllBrushWindingsToClipMapWithFilter(filter);
@@ -367,4 +368,36 @@ bool CM_BoundsInView(const fvec3& mins, const fvec3& maxs, struct cplane_s* frus
 	}
 
 	return 0;
+}
+
+constexpr std::array<std::int32_t, 24> iEdgePairs =
+{
+  0, 1, 0, 2, 0, 4, 1, 3, 1, 5, 2, 3,
+  2, 6, 3, 7, 4, 5, 4, 6, 5, 7, 6, 7
+};
+constexpr auto iNextEdgePair = &iEdgePairs[1];
+
+std::vector<fvec3> CM_CreateHitbox(const fvec3& mins, const fvec3& maxs)
+{
+	constexpr auto iota = std::views::iota;
+
+	float v[8][3]{};
+	for (const auto i : iota(0u, 8u)) {
+		for (const auto j : iota(0u, 3u)) {
+
+			if ((i & (1 << j)) != 0)
+				v[i][j] = maxs[j];
+			else
+				v[i][j] = mins[j];
+		}
+	}
+
+
+	std::vector<fvec3> points;
+	for (const auto i : iota(0u, 12u)) {
+		points.emplace_back(v[iEdgePairs[i * 2]]);
+		points.emplace_back(v[iNextEdgePair[i * 2]]);
+	}
+
+	return points;
 }

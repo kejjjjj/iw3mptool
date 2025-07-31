@@ -93,6 +93,7 @@ dvar_s* Dvar_RegisterFloat(const char* name, float value, float min, float max, 
 dvar_s* Dvar_RegisterInt(const char* name, int value, int min, int max, int flags, const char* description);
 dvar_s* Dvar_RegisterBool(const char* name, int flags, bool value, const char* description);
 dvar_s* Dvar_RegisterEnum(const char* name, const char** valueList, int enumSize, int defaultIndex, int flags, const char* description);
+dvar_s* Dvar_RegisterString(const char* name, const char* value, int flags, const char* description);
 
 char* Dvar_GetVariantString(const char* v);
 

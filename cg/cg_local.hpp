@@ -1,6 +1,7 @@
 #pragma once
 
 using vec3_t = float[3];
+using vec4_t = float[4];
 
 struct HWND__;
 struct HINSTANCE__;

@@ -158,7 +158,7 @@ void CM_ShowCollision([[maybe_unused]] GfxViewParms* viewParms)
 
 		std::unique_lock<std::mutex> gentLock(CGentities::GetLock());
 
-		const auto showConnections = Dvar_FindMalleableVar("cm_showEntityConnections")->current.enabled;
+		const auto showConnections = Dvar_FindMalleableVar("cm_entityConnections")->current.enabled;
 
 		CGentities::ForEach([&](const GentityPtr_t& gent) {
 			auto numVerts = gent->GetNumVerts();

@@ -25,18 +25,13 @@ void CG_Init()
 	std::this_thread::sleep_for(300ms);
 
 	CoD4X::Initialize();
-
+	
 	Dvar_RegisterBool("sec_executeCommands", dvar_flags::saved, true,
 		"When disabled, the client will ignore ALL commands sent by the server");
 
-
 	CM_LoadDvars();
-
 	CG_CreateHooks();
 	CG_MemoryTweaks();
 	
-
-
-
 	Sys_ResumeAllThreads();
 }

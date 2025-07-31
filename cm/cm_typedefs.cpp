@@ -26,13 +26,14 @@ cm_winding::cm_winding(const std::vector<fvec3>& p, const fvec3& normal, [[maybe
 	is_bounce = normal[2] >= 0.3f && normal[2] <= 0.7f;
 	is_elevator = std::fabs(normal[0]) == 1.f || std::fabs(normal[1]) == 1.f;
 	normals = normal;
+	VectorCopy(col, color);
 
-	if (rgp && rgp->world) {
-		fvec3 new_color = SetSurfaceBrightness(col, normal, rgp->world->sunParse.angles);
-		VectorCopy(new_color, color);
-	} else {
-		VectorCopy(col, color);
-	}
+	//if (rgp && rgp->world) {
+	//	fvec3 new_color = SetSurfaceBrightness(col, normal, rgp->world->sunParse.angles);
+	//	VectorCopy(new_color, color);
+	//} else {
+	//	VectorCopy(col, color);
+	//}
 
 	color[3] = 0.7f;
 
@@ -67,11 +68,11 @@ bool cm_brush::RB_MakeInteriorsRenderable(const cm_renderinfo& info) const
 		vec4_t c = { 0,1,0, info.alpha };
 
 		//only use sunlight when there are no outlines in a polygon
-		if (info.poly_type == pt_polys) {
+		//if (info.poly_type == pt_polys) {
 			c[0] = w.color[0];
 			c[1] = w.color[1];
 			c[2] = w.color[2];
-		}
+		//}
 
 		if (info.only_bounces) {
 			float n = w.normals[2];
@@ -117,11 +118,11 @@ bool cm_brush::RB_MakeOutlinesRenderable(const cm_renderinfo& info, int& nverts)
 
 		vec4_t c = { w.color[0],w.color[1],w.color[2],info.alpha };
 
-		if (info.poly_type != pt_polys) {
-			c[0] = 0;
-			c[1] = 1;
-			c[2] = 0;
-		}
+		//if (info.poly_type != pt_polys) {
+		//	c[0] = 0;
+		//	c[1] = 1;
+		//	c[2] = 0;
+		//}
 
 		if (info.only_bounces) {
 			float n = w.normals[2];

@@ -54,7 +54,31 @@ dvar_s* Dvar_RegisterBool(const char* name, int flags, bool value, const char* d
 }
 dvar_s* Dvar_RegisterEnum(const char* name, const char** valueList, int enumSize, int defaultIndex, int flags, const char* description)
 {
-    return Engine::call<dvar_s*>(0x56C130, name, dvar_type::enumeration, flags, description, defaultIndex, 0, 0, 0, enumSize, valueList);
+    int _type = (int)dvar_type::enumeration;
+    __asm
+    {
+        push valueList;
+        push enumSize;
+        push 0;
+        push 0;
+        push 0;
+        push defaultIndex;
+        push description;
+        push flags;
+        push _type;
+        mov eax, name;
+        mov esi, 0x56C350;
+        call esi;
+        add esp, 36;
+    }
+
+    //return Engine::call<dvar_s*>(0x56C350, name, dvar_type::enumeration, flags, description, defaultIndex, 0, 0, 0, enumSize, valueList);
+}
+dvar_s* Dvar_RegisterString(const char* name, const char* value, int flags, const char* description)
+{
+
+    return Engine::call<dvar_s*>(0x56C5B0, name, value, flags, description);
+
 }
 char* Dvar_GetVariantString(const char* v)
 {

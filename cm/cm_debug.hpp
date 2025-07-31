@@ -4,7 +4,7 @@
 #include "cg/cg_local.hpp"
 
 void CM_LoadDvars();
-void CM_DrawDebug(float& y);
+void CM_DrawDebug(float& y, const vec4_t color);
 
 struct CGDebugData
 {

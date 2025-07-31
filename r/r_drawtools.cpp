@@ -142,7 +142,7 @@ void R_AddCmdDrawTextWithEffects(const std::string& text, const std::string& fon
 
 
 }
-void R_DrawTextWithEffects(const std::string& text, const char* fontname, float x, float y, float xScale, float yScale, float rotation, float* color, int style, float* glowColor)
+void R_DrawTextWithEffects(const std::string& text, const char* fontname, float x, float y, float xScale, float yScale, float rotation, const float* color, int style, const float* glowColor)
 {
 	Material* fxMaterial = R_RegisterMaterial("decode_characters");
 	Material* fxMaterialGlow = R_RegisterMaterial("decode_characters_glow");

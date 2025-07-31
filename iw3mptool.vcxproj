@@ -169,6 +169,7 @@
     <ClInclude Include="fs\fs_io.hpp" />
     <ClInclude Include="global\defs.hpp" />
     <ClInclude Include="g\g_spawn.hpp" />
+    <ClInclude Include="g\g_trigger.hpp" />
     <ClInclude Include="r\backend\rb_endscene.hpp" />
     <ClInclude Include="r\r_drawactive.hpp" />
     <ClInclude Include="r\r_drawtools.hpp" />
@@ -203,6 +204,7 @@
     <ClCompile Include="fs\fs_globals.cpp" />
     <ClCompile Include="fs\fs_io.cpp" />
     <ClCompile Include="g\g_spawn.cpp" />
+    <ClCompile Include="g\g_trigger.cpp" />
     <ClCompile Include="r\backend\rb_endscene.cpp" />
     <ClCompile Include="r\r_drawactive.cpp" />
     <ClCompile Include="r\r_drawtools.cpp" />

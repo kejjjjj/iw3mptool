@@ -22,10 +22,37 @@
 
 #include <cassert>
 #include <ranges>
-
+#include <array>
+#include <string>
 
 using namespace std::string_literals;
 
+void Cmd_ShowEntities_f()
+{
+	int num_args = cmd_args->argc[cmd_args->nesting];
+
+	if (num_args == 1) {
+		if (CGentities::Size() == 0) {
+			return Com_Printf(CON_CHANNEL_CONSOLEONLY, "there are no entities to be cleared.. did you intend to use cm_showEntities <classname>?\n");
+		}
+
+		if (Dvar_FindMalleableVar("developer")->current.enabled)
+			Com_Printf("clearing %i entities from the render queue\n", CGentities::Size());
+
+		return CGentities::ClearThreadSafe();
+	}
+
+	std::string filter;
+	for (int i = 1; i < num_args; i++) {
+		filter += (*(cmd_args->argv[cmd_args->nesting] + i));
+		filter += " ";
+	}
+
+	CGentities::CM_LoadAllEntitiesToClipMapWithFilter(filter);
+
+	Com_Printf(CON_CHANNEL_CONSOLEONLY, "adding %i entities to the render queue\n", CGentities::Size());
+
+}
 
 void CGentities::CM_LoadAllEntitiesToClipMapWithFilter([[maybe_unused]]const std::string& filter)
 {
@@ -102,9 +129,15 @@ bool CGameEntity::IsBrushModel() const noexcept
 	assert(m_pOwner != nullptr);
 	return m_pOwner->r.bmodel;
 }
-
-void CGameEntity::CG_Render2D(float drawDist) const
+static std::array<std::string, 6> nonVerboseInfoStrings = {
+	"classname", "targetname", "spawnflags",
+	"target", "script_noteworthy", "script_flag"
+};
+void CGameEntity::CG_Render2D(float drawDist, entity_info_type entType) const
 {
+	if (entType == entity_info_type::eit_disabled)
+		return;
+
 	const auto distance = m_vecOrigin.dist(cgs->predictedPlayerState.origin);
 
 	if (distance > drawDist || m_oEntityFields.empty())
@@ -114,20 +147,25 @@ void CGameEntity::CG_Render2D(float drawDist) const
 	fvec3 center = { 
 		m_pOwner->r.currentOrigin[0], 
 		m_pOwner->r.currentOrigin[1], 
-		m_pOwner->r.currentOrigin[2] + (m_pOwner->r.maxs[2] - m_pOwner->r.mins[2]) / 2 
+		m_pOwner->r.currentOrigin[2] /*+ (m_pOwner->r.maxs[2] - m_pOwner->r.mins[2]) / 2 */
 	};
 
-	std::stringstream buff;
-	for (const auto& [k, v] : m_oEntityFields) {
-		if (k == "model") //useless
-			continue;
+	std::string buff;
+	for (const auto& [key, value] : m_oEntityFields) {
+		if (entType == entity_info_type::eit_enabled) {
+			if (std::ranges::find(nonVerboseInfoStrings, key) == nonVerboseInfoStrings.end())
+				continue;
+		}
 
-		buff << k << " - " << v << '\n';
+		buff += std::string(key) + " - " + value + "\n";
 	}
+
+	if (buff.empty())
+		return;
 
 	if (auto op = WorldToScreen(center)) {
 		const float scale = R_ScaleByDistance(distance) * 0.15f;
-		R_AddCmdDrawTextWithEffects(buff.str(), "fonts/bigdevFont", *op, scale, 0.f, 5, vec4_t{1,1,1,1}, vec4_t{1,0,0,0});
+		R_AddCmdDrawTextWithEffects(buff, "fonts/bigdevFont", *op, scale, 0.f, 5, vec4_t{1,1,1,1}, vec4_t{1,0,0,0});
 	}
 
 }
@@ -264,10 +302,10 @@ CBrushModel::CBrush::CBrush(gentity_s* const g, const cbrush_t* const brush) : C
 {
 	assert(m_pSourceBrush != nullptr);
 
-	const vec3_t CYAN = { 0.f, 1.f, 1.f };
+	const vec3_t col = { 1.f, 0.f, 0.f };
 
 	//questionable for sure!
-	m_oOriginalGeometry = *dynamic_cast<cm_brush*>(&*CM_GetBrushPoints(m_pSourceBrush, CYAN));
+	m_oOriginalGeometry = *dynamic_cast<cm_brush*>(&*CM_GetBrushPoints(m_pSourceBrush, col));
 	m_oCurrentGeometry = m_oOriginalGeometry;
 
 	OnPositionChanged(g->r.currentOrigin, g->r.currentAngles);

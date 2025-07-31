@@ -14,6 +14,15 @@ struct CGentityConnection
 	fvec3 start, end;
 };
 
+enum class entity_info_type
+{
+	eit_disabled,
+	eit_enabled,
+	eit_verbose
+};
+
+void Cmd_ShowEntities_f();
+
 class CGameEntity
 {
 public:
@@ -28,7 +37,7 @@ public:
 	[[nodiscard]] virtual bool RB_MakeOutlinesRenderable([[maybe_unused]] const cm_renderinfo& info, [[maybe_unused]] int& nverts) const { return false; }
 	void RB_RenderConnections(const cm_renderinfo& info, int& nverts) const;
 
-	virtual void CG_Render2D(float drawDist) const;
+	virtual void CG_Render2D(float drawDist, entity_info_type entType) const;
 
 	void GenerateConnections(const LevelGentities_t& gentities);
 

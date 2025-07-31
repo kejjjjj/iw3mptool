@@ -165,6 +165,9 @@
     <ClInclude Include="cmd\cmd.hpp">
       <Filter>Source Files\cmd</Filter>
     </ClInclude>
+    <ClInclude Include="g\g_trigger.hpp">
+      <Filter>Source Files\g</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -268,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="cmd\cmd.cpp">
       <Filter>Source Files\cmd</Filter>
+    </ClCompile>
+    <ClCompile Include="g\g_trigger.cpp">
+      <Filter>Source Files\g</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

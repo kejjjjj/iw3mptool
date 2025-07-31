@@ -7,6 +7,7 @@
 #include "r/r_drawactive.hpp"
 #include "r/r_endscene.hpp"
 #include "utils/hook.hpp"
+#include "g/g_trigger.hpp"
 
 static void CG_CreateHooksInternal();
 void CG_CreateHooks()
@@ -26,6 +27,7 @@ void CG_CreateHooksInternal()
 
 	hooktable::overwriter<void>(HOOK_PREFIX("__asm_adjacency_winding"), 0x57D86C, __brush::__asm_adjacency_winding);
 
+	hooktable::overwriter<void>(HOOK_PREFIX("G_Trigger"), 0x4E1130, G_Trigger);
 
 	//if (dx && dx->device)
 	//	hooktable::preserver<long, IDirect3DDevice9*>(HOOK_PREFIX("R_EndScene"),

@@ -20,6 +20,7 @@ void CM_ShowCollisionFilter();
 [[nodiscard]] std::vector<std::string> CM_GetBrushMaterials(const cbrush_t* brush);
 [[nodiscard]] bool CM_BrushInView(const cbrush_t* brush, struct cplane_s* frustumPlanes, int numPlanes = 5);
 [[nodiscard]] bool CM_BoundsInView(const fvec3& mins, const fvec3& maxs, struct cplane_s* frustumPlanes, int numPlanes);
+[[nodiscard]] std::vector<fvec3> CM_CreateHitbox(const fvec3& mins, const fvec3& maxs);
 
 void CM_LoadAllBrushWindingsToClipMapWithFilter(const std::string& filter);
 void CM_LoadBrushWindingsToClipMap(const cbrush_t* brush);
