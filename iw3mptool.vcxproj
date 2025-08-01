@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(DXSDK_DIR)Include;$(ProjectDir)scripting\Debug\VarjusAPI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -87,6 +87,7 @@
       <EnableUAC>false</EnableUAC>
       <OutputFile>D:\Activision\CallOfDuty4\miles\iw3mptool.asi</OutputFile>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories);$(SolutionDir)w$(Platform)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ProjectDir)scripting\Debug\VarjusAPI\lib\VarjusAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,7 +101,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(DXSDK_DIR)Include;$(ProjectDir)scripting\Release\VarjusAPI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -109,6 +110,7 @@
       <EnableUAC>false</EnableUAC>
       <OutputFile>D:\Activision\CallOfDuty4\miles\iw3mptool.asi</OutputFile>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories);$(SolutionDir)w$(Platform)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ProjectDir)scripting\Release\VarjusAPI\lib\VarjusAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,6 +153,8 @@
     <ClInclude Include="cg\cg_local.hpp" />
     <ClInclude Include="cg\cg_memory.hpp" />
     <ClInclude Include="cg\cg_offsets.hpp" />
+    <ClInclude Include="cg\cg_trace.hpp" />
+    <ClInclude Include="cl\cl_main.hpp" />
     <ClInclude Include="cmd\cmd.hpp" />
     <ClInclude Include="cm\cm_brush.hpp" />
     <ClInclude Include="cm\cm_debug.hpp" />
@@ -168,12 +172,22 @@
     <ClInclude Include="fs\fs_globals.hpp" />
     <ClInclude Include="fs\fs_io.hpp" />
     <ClInclude Include="global\defs.hpp" />
+    <ClInclude Include="g\g_entities.hpp" />
     <ClInclude Include="g\g_spawn.hpp" />
     <ClInclude Include="g\g_trigger.hpp" />
+    <ClInclude Include="menu\menu_parse.hpp" />
     <ClInclude Include="r\backend\rb_endscene.hpp" />
     <ClInclude Include="r\r_drawactive.hpp" />
     <ClInclude Include="r\r_drawtools.hpp" />
     <ClInclude Include="r\r_endscene.hpp" />
+    <ClInclude Include="scripting\cm\sc_debug.hpp" />
+    <ClInclude Include="scripting\cm\sc_trace.hpp" />
+    <ClInclude Include="scripting\cm\sc_world.hpp" />
+    <ClInclude Include="scripting\sc_globals.hpp" />
+    <ClInclude Include="scripting\sc_level.hpp" />
+    <ClInclude Include="scripting\sc_main.hpp" />
+    <ClInclude Include="scripting\sc_main_callbacks.hpp" />
+    <ClInclude Include="scripting\sc_self.hpp" />
     <ClInclude Include="scr\scr_functions.hpp" />
     <ClInclude Include="sys\sys_thread.hpp" />
     <ClInclude Include="utils\engine.hpp" />
@@ -187,6 +201,8 @@
     <ClCompile Include="cg\cg_hooks.cpp" />
     <ClCompile Include="cg\cg_init.cpp" />
     <ClCompile Include="cg\cg_memory.cpp" />
+    <ClCompile Include="cg\cg_trace.cpp" />
+    <ClCompile Include="cl\cl_main.cpp" />
     <ClCompile Include="cmd\cmd.cpp" />
     <ClCompile Include="cm\cm_brush.cpp" />
     <ClCompile Include="cm\cm_debug.cpp" />
@@ -203,12 +219,22 @@
     <ClCompile Include="dvar\dvar.cpp" />
     <ClCompile Include="fs\fs_globals.cpp" />
     <ClCompile Include="fs\fs_io.cpp" />
+    <ClCompile Include="g\g_entities.cpp" />
     <ClCompile Include="g\g_spawn.cpp" />
     <ClCompile Include="g\g_trigger.cpp" />
+    <ClCompile Include="menu\menu_parse.cpp" />
     <ClCompile Include="r\backend\rb_endscene.cpp" />
     <ClCompile Include="r\r_drawactive.cpp" />
     <ClCompile Include="r\r_drawtools.cpp" />
     <ClCompile Include="r\r_endscene.cpp" />
+    <ClCompile Include="scripting\cm\sc_debug.cpp" />
+    <ClCompile Include="scripting\cm\sc_trace.cpp" />
+    <ClCompile Include="scripting\cm\sc_world.cpp" />
+    <ClCompile Include="scripting\sc_globals.cpp" />
+    <ClCompile Include="scripting\sc_level.cpp" />
+    <ClCompile Include="scripting\sc_main.cpp" />
+    <ClCompile Include="scripting\sc_main_callbacks.cpp" />
+    <ClCompile Include="scripting\sc_self.cpp" />
     <ClCompile Include="scr\scr_functions.cpp" />
     <ClCompile Include="sys\sys_thread.cpp" />
     <ClCompile Include="utils\mh\buffer.c" />

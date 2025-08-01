@@ -1,0 +1,7 @@
+fn main()
+{
+	for(const { name, origin } : level.players){
+		println(`${name} at ${origin[0]}, ${origin[1]}, ${origin[2]}`);
+		world.debug_line(self.view_origin, origin, [1,0,0,1], false, 1000);
+	}
+}

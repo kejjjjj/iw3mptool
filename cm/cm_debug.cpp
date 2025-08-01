@@ -24,7 +24,7 @@ void CM_LoadDvars()
 	static const char* entity_info[] = { "Disabled", "Enabled", "Verbose" };
 
 	Dvar_RegisterEnum("cm_showCollision", showCollisionNames, 4, 3, dvar_flags::saved, 
-		"Select whether to show the terrain, brush or all collision surface groups" );
+		"Select whether to show the terrain, brush or all collision surface groups");
 
 	Dvar_RegisterEnum("cm_showCollisionPolyType", poly_types, 3, 2, dvar_flags::saved, 
 		"Select whether to display the collision surfaces as wireframe or poly interiors");
@@ -39,8 +39,8 @@ void CM_LoadDvars()
 	Dvar_RegisterBool("cm_onlyElevators", dvar_flags::saved, false, "Only display surfaces which can be elevated");
 	Dvar_RegisterBool("cm_disableTriggers", dvar_flags::none, false, "Triggers will not have any effect");
 
-	Dvar_RegisterEnum("cm_entityInfo", entity_info, 3, 2, dvar_flags::saved, "Display entity information");
-	Dvar_RegisterBool("cm_entityConnections", dvar_flags::saved, false, "Draw lines between connected entities");
+	Dvar_RegisterEnum("cm_entityInfo", entity_info, 3, 1, dvar_flags::saved, "Display entity information");
+	Dvar_RegisterBool("cm_entityConnections", dvar_flags::saved, true, "Draw lines between connected entities");
 
 	Dvar_RegisterBool("pm_coordinates", dvar_flags::saved, false, "show player coordinates");
 	Dvar_RegisterBool("pm_velocity", dvar_flags::saved, false, "show player velocity");

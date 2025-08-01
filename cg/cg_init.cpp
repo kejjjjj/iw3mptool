@@ -8,6 +8,7 @@
 #include "utils/hook.hpp"
 #include "sys/sys_thread.hpp"
 #include "dvar/dvar.hpp"
+#include "scripting/sc_main.hpp"
 
 #include <chrono>
 #include <thread>
@@ -25,12 +26,17 @@ void CG_Init()
 	std::this_thread::sleep_for(300ms);
 
 	CoD4X::Initialize();
-	
+	Varjus_Init();
+
 	Dvar_RegisterBool("sec_executeCommands", dvar_flags::saved, true,
 		"When disabled, the client will ignore ALL commands sent by the server");
 
 	CM_LoadDvars();
+	Varjus_LoadDvars();
+
 	CG_CreateHooks();
+
+
 	CG_MemoryTweaks();
 	
 	Sys_ResumeAllThreads();

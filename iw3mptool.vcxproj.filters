@@ -58,6 +58,18 @@
     <Filter Include="Source Files\cmd">
       <UniqueIdentifier>{62df16a2-6b43-45bf-b03a-cdb0dc3a1e28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\menu">
+      <UniqueIdentifier>{7e1c7f39-2a02-48ff-b7f1-9c28240465c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scripting">
+      <UniqueIdentifier>{c4be1f04-4269-4c51-90c5-22087395d2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scripting\cm">
+      <UniqueIdentifier>{b85117e3-7c13-41a4-b409-4f637ff0c186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cl">
+      <UniqueIdentifier>{ae5e0d8d-1585-4d66-9100-627af8aeecb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cg\cg_init.hpp">
@@ -168,6 +180,42 @@
     <ClInclude Include="g\g_trigger.hpp">
       <Filter>Source Files\g</Filter>
     </ClInclude>
+    <ClInclude Include="menu\menu_parse.hpp">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\sc_main.hpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\sc_main_callbacks.hpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\sc_self.hpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\sc_level.hpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="g\g_entities.hpp">
+      <Filter>Source Files\g</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\sc_globals.hpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\cm\sc_trace.hpp">
+      <Filter>Source Files\scripting\cm</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\cm\sc_debug.hpp">
+      <Filter>Source Files\scripting\cm</Filter>
+    </ClInclude>
+    <ClInclude Include="cg\cg_trace.hpp">
+      <Filter>Source Files\cg</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\cm\sc_world.hpp">
+      <Filter>Source Files\scripting\cm</Filter>
+    </ClInclude>
+    <ClInclude Include="cl\cl_main.hpp">
+      <Filter>Source Files\cl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -274,6 +322,42 @@
     </ClCompile>
     <ClCompile Include="g\g_trigger.cpp">
       <Filter>Source Files\g</Filter>
+    </ClCompile>
+    <ClCompile Include="menu\menu_parse.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\sc_main.cpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\sc_main_callbacks.cpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\sc_self.cpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\sc_level.cpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="g\g_entities.cpp">
+      <Filter>Source Files\g</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\sc_globals.cpp">
+      <Filter>Source Files\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\cm\sc_trace.cpp">
+      <Filter>Source Files\scripting\cm</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\cm\sc_world.cpp">
+      <Filter>Source Files\scripting\cm</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\cm\sc_debug.cpp">
+      <Filter>Source Files\scripting\cm</Filter>
+    </ClCompile>
+    <ClCompile Include="cg\cg_trace.cpp">
+      <Filter>Source Files\cg</Filter>
+    </ClCompile>
+    <ClCompile Include="cl\cl_main.cpp">
+      <Filter>Source Files\cl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

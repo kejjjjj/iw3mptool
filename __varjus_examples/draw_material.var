@@ -1,0 +1,23 @@
+fn vec_multiply(a, b) {
+	return [ a[0] * b, a[1] * b, a[2] * b ];
+}
+fn vec_add(a, b) {
+	return [ a[0] + b[0], a[1] + b[1], a[2] + b[2] ];
+}
+
+fn main()
+{
+	//tracing will crash when running asynchronously
+	if(get_dvar_int("varjus_async") != 0){
+		println("set varjus_async to 0");
+		return;
+	}
+
+	const start = self.view_origin;
+	const _end = vec_multiply(self.angles_to_forward(), 9999);
+	const end = vec_add(start, _end);
+
+	const result = world.player_trace([-1, -1, -1], [1, 1, 1], start, end);
+
+	world.debug_string(result.hitpos, [1,1,1,1], 1.0, result.material, 1000);
+}

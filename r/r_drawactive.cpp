@@ -7,6 +7,7 @@
 #include "dvar/dvar.hpp"
 #include "cm/cm_debug.hpp"
 #include "cm/cm_entity.hpp"
+#include "scripting/sc_main.hpp"
 
 static void CG_DrawCoordinates(float& y, const vec4_t color)
 {
@@ -70,6 +71,8 @@ void CG_DrawActive()
 		});
 
 	}
+
+	Varjus_ExecFrame();
 
 	return hooktable::find<void>(HOOK_PREFIX(__func__))->call();
 

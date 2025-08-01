@@ -1,0 +1,14 @@
+fn main()
+{
+	let oldOrigin = self.origin;
+
+	for(let i = 0; i < 10; i++){
+		sleep(1000);
+		const currentOrigin = self.origin;
+		world.debug_line(oldOrigin, currentOrigin, [1,0,0,1], false, 100);
+
+		oldOrigin = currentOrigin;
+		println("spawned!");
+	}
+
+}

@@ -6,7 +6,7 @@
 
 using namespace std::chrono_literals;
 
-#define USE_CONSOLE 1
+#define USE_CONSOLE 0
 
 constexpr auto MODULE_NAME = "iw3mp.exe";
 
