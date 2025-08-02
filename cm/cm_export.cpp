@@ -2,6 +2,7 @@
 #include "cg/cg_offsets.hpp"
 #include "cm_brush.hpp"
 #include "cm_typedefs.hpp"
+#include "cm_export.hpp"
 #include "com/com_channel.hpp"
 #include "com/com_error.hpp"
 #include "fs/fs_globals.hpp"
@@ -70,11 +71,18 @@ void CM_WriteInOrder(std::stringstream& o)
 
 void CM_MapExport()
 {
-
 	if (!cm->name)
 		return;
 
 	CM_LoadMap();
+	CM_MapExport_Selected();
+}
+
+void CM_MapExport_Selected()
+{
+
+	if (!cm->name)
+		return;
 
 	std::string name = cm->name;
 	name = name.substr(0u, name.length() - sizeof(".d3dbsp") + 1u);

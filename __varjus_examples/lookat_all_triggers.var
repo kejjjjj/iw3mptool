@@ -1,0 +1,12 @@
+fn main()
+{
+	if(get_dvar_int("varjus_async") !== 1)
+		return println("set varjus_async to 1");
+	
+	for(const { classname, origin } : level.entities) {
+		if(classname.contains("trigger")){
+			self.look_at(origin[0], origin[1], origin[2]);
+			sleep(1000);
+		}
+	}
+}

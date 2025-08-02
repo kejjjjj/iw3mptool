@@ -42,6 +42,8 @@ public:
 	void GenerateConnections(const LevelGentities_t& gentities);
 
 	[[nodiscard]] virtual int GetNumVerts() const noexcept { return 0; }
+	[[nodiscard]] constexpr gentity_s* GetOwner() const noexcept { return m_pOwner; }
+	[[nodiscard]] constexpr auto& GetFields() const noexcept { return m_oEntityFields; }
 
 protected:
 

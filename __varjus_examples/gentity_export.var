@@ -1,0 +1,6 @@
+const exportPath = `${global.game_directory}\\gentities.json`;
+
+fn main()
+{
+	fs.write(exportPath, json.stringify({ data: level.entities }, true));
+}
