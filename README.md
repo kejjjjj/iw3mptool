@@ -1,4 +1,5 @@
 # iw3mptool // a multipurpose tool for call of duty 4 multiplayer
+https://discord.gg/xv3QVqJnJF
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/b93fab71-3c95-4d95-be43-f992f25bcc91" />
 
