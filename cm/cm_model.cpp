@@ -17,11 +17,11 @@ void hmm_f()
 	if (num_args == 1) {
 		if (CClipMap::Size() == 0)
 			Com_Printf(CON_CHANNEL_CONSOLEONLY, "there is no geometry to be cleared.. did you intend to use xm_load <name>?\n");
-		CClipMap::ClearThreadSafe();
+		CClipMap::ClearAllOfTypeThreadSafe(cm_geomtype::model);
 		return;
 	}
 
-	CClipMap::ClearThreadSafe();
+	CClipMap::ClearAllOfTypeThreadSafe(cm_geomtype::model);
 
 	std::string filter;
 
@@ -29,8 +29,6 @@ void hmm_f()
 		filter += *(cmd_args->argv[cmd_args->nesting] + i);
 		filter += " ";
 	}
-
-	CClipMap::ClearThreadSafe();
 
 	std::unique_lock<std::mutex> lock(CClipMap::GetLock());
 
