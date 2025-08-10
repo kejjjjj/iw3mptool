@@ -1,0 +1,8 @@
+
+
+fn main(args)
+{
+
+	for(const arg : args)
+		println(arg.toupper());
+}

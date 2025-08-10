@@ -13,6 +13,7 @@
 #include <thread>
 #include <string>
 #include <mutex>
+#include <ranges>
 
 void Varjus_Init()
 {
@@ -34,6 +35,7 @@ public:
 	static bool m_bExecNow;
 	static bool m_bAbort;
 	static std::string m_sScriptPath;
+	static std::vector<std::string> m_oArgs;
 	static std::mutex mtx;
 };
 
@@ -41,13 +43,16 @@ bool CScript::m_bExecNow{};
 bool CScript::m_bAbort{};
 std::string CScript::m_sScriptPath;
 std::mutex CScript::mtx;
+std::vector<std::string> CScript::m_oArgs;
 
 void Varjus_Exec_f()
 {
+	CScript::m_oArgs.clear();
+
 	const auto num_args = cmd_args->argc[cmd_args->nesting];
 
-	if (num_args != 2) {
-		return Com_Printf(CON_CHANNEL_CONSOLEONLY, "usage: varjus_exec <script_path>\n");
+	if (num_args < 2) {
+		return Com_Printf(CON_CHANNEL_CONSOLEONLY, "usage: varjus_exec <script_path> <optional args>\n");
 	}
 
 	const std::string relative = *(cmd_args->argv[cmd_args->nesting] + 1);
@@ -61,6 +66,12 @@ void Varjus_Exec_f()
 	}
 	
 	std::unique_lock<std::mutex> lock(CScript::mtx);
+
+	if (num_args > 2) {
+		for (const auto i : std::views::iota(2, num_args)) {
+			CScript::m_oArgs.push_back(*(cmd_args->argv[cmd_args->nesting] + i));
+		}
+	}
 
 	CScript::m_bExecNow = { true };
 	CScript::m_sScriptPath = fullPath;
@@ -105,6 +116,13 @@ void Varjus_ExecFrame()
 	}
 }
 
+VARJUS_DEFINE_ARGS(ParseArgs, ctx, receiver)
+{
+	for (const auto& arg : CScript::m_oArgs) {
+		receiver.push_back(CStringValue::Construct(ctx, arg));
+	}
+}
+
 static std::string SC_ErrorTranslator(const std::optional<std::string>& err) {
 	return err.value_or("unknown error");
 }
@@ -140,7 +158,7 @@ bool CScriptData::SC_Execute(const std::string& script)
 	if (!SC_Prepare(state, &Varjus::State::LoadScript, script))
 		return false;
 
-	if (const auto result = state.ExecuteScript()) {
+	if (const auto result = state.ExecuteScript(ParseArgs)) {
 		return true;
 	}
 
@@ -153,7 +171,7 @@ bool CScriptData::SC_ExecuteFile(const std::string& path)
 	if (!SC_Prepare(state, &Varjus::State::LoadScriptFromFile, path, Varjus::e_utf8))
 		return false;
 
-	if (const auto result = state.ExecuteScript()) {
+	if (const auto result = state.ExecuteScript(ParseArgs)) {
 		return true;
 	}
 
@@ -161,7 +179,7 @@ bool CScriptData::SC_ExecuteFile(const std::string& path)
 }
 
 static void AwaitFunc(Varjus::State& state) {
-	[[maybe_unused]] const auto result = state.ExecuteScript();
+	[[maybe_unused]] const auto result = state.ExecuteScript(ParseArgs);
 }
 
 bool CScriptData::SC_ExecuteAsynchronously(Varjus::State& state, const std::string& script)

@@ -115,7 +115,9 @@ void CM_ShowCollision([[maybe_unused]] GfxViewParms* viewParms)
 			if (RB_CheckTessOverflow(poly->num_verts, 3 * (poly->num_verts - 2)))
 				RB_TessOverflow(true, render_info.depth_test);
 
-			if (poly->type() == cm_geomtype::brush && brush_allowed || poly->type() == cm_geomtype::terrain && terrain_allowed) {
+			if (poly->type() == cm_geomtype::brush && brush_allowed 
+				|| poly->type() == cm_geomtype::terrain && terrain_allowed
+				|| poly->type() == cm_geomtype::model) {
 				if (poly->RB_MakeInteriorsRenderable(render_info)) {
 					CGDebugData::tessVerts += poly->num_verts;
 					CGDebugData::tessIndices += 3 * (poly->num_verts - 2);
@@ -148,7 +150,9 @@ void CM_ShowCollision([[maybe_unused]] GfxViewParms* viewParms)
 
 		CClipMap::ForEach([&](const GeometryPtr_t& poly) {
 
-			if (poly->type() == cm_geomtype::brush && brush_allowed || poly->type() == cm_geomtype::terrain && terrain_allowed) {
+			if (poly->type() == cm_geomtype::brush && brush_allowed 
+				|| poly->type() == cm_geomtype::terrain && terrain_allowed
+				|| poly->type() == cm_geomtype::model) {
 				if (poly->RB_MakeOutlinesRenderable(render_info, vert_count)) {
 					CGDebugData::tessVerts += poly->num_verts;
 					CGDebugData::tessIndices += 3 * (poly->num_verts - 2);

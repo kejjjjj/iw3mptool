@@ -279,13 +279,18 @@ struct cm_model : public cm_geometry
 {
 	friend class IValue* WorldModels(Varjus::CRuntimeContext* const ctx, [[maybe_unused]] IValue* _this);
 
-	cm_model(const char* _name, const fvec3& _origin, const fvec3& _angles, float _modelscale) : 
-		name(_name), origin(_origin), angles(_angles), modelscale(_modelscale) {}
+	cm_model(const char* _name, const fvec3& _origin, const fvec3& _angles, float _modelscale, const std::vector<cm_triangle>& _tris) :
+		name(_name), origin(_origin), angles(_angles), modelscale(_modelscale), tris(_tris) {
+		num_verts = 3;
+	}
 	~cm_model() = default;
 
 	void render2d() override {};
 
 	constexpr cm_geomtype type() const noexcept override { return cm_geomtype::model; }
+
+	[[nodiscard]] bool RB_MakeInteriorsRenderable(const cm_renderinfo& info) const override;
+	[[nodiscard]] bool RB_MakeOutlinesRenderable(const cm_renderinfo& info, int& nverts) const override;
 
 protected:
 	int map_export(std::stringstream& o, int index) override;
@@ -295,6 +300,7 @@ private:
 	fvec3 origin;
 	fvec3 angles;
 	float modelscale = {};
+	std::vector<cm_triangle> tris;
 };
 
 void CM_LoadMap();

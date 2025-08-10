@@ -15,6 +15,7 @@
 CArrayValue* GenerateWindingArray(Varjus::CProgramRuntime* const rt, [[maybe_unused]]const std::vector<cm_winding>& w)
 {
 	IValues values;
+	values.reserve(w.size());
 
 	for (const auto& winding : w) {
 		values.push_back(ToKVObject(rt, 
@@ -28,6 +29,7 @@ CArrayValue* GenerateWindingArray(Varjus::CProgramRuntime* const rt, [[maybe_unu
 CArrayValue* GenerateTriangleArray(Varjus::CProgramRuntime* const rt, [[maybe_unused]] const std::vector<cm_triangle>& tris)
 {
 	IValues values;
+	values.reserve(tris.size());
 
 	const auto generate_pts = [&rt](const cm_triangle& tri) {
 		
@@ -117,6 +119,9 @@ VARJUS_DEFINE_PROPERTY(WorldTerrain, ctx, _this)
 VARJUS_DEFINE_PROPERTY(WorldModels, ctx, _this)
 {
 	IValues models;
+	models.reserve(gfxWorld->dpvs.smodelCount);
+
+	CClipMap::ClearAllOfTypeThreadSafe(cm_geomtype::model);
 
 	for (const auto i : std::views::iota(0u, gfxWorld->dpvs.smodelCount)) {
 		auto model = CM_MakeModel(&gfxWorld->dpvs.smodelDrawInsts[i]);
@@ -125,9 +130,13 @@ VARJUS_DEFINE_PROPERTY(WorldModels, ctx, _this)
 			std::make_pair(VSL("name"), CStringValue::Construct(ctx->m_pRuntime, model.name)),
 			std::make_pair(VSL("modelscale"), CDoubleValue::Construct(ctx->m_pRuntime, model.modelscale)),
 			std::make_pair(VSL("origin"), ToVec3FromObject(ctx->m_pRuntime, model.origin)),
-			std::make_pair(VSL("angles"), ToVec3FromObject(ctx->m_pRuntime, model.angles))
+			std::make_pair(VSL("angles"), ToVec3FromObject(ctx->m_pRuntime, model.angles)),
+			std::make_pair(VSL("triangles"), GenerateTriangleArray(ctx->m_pRuntime, model.tris))
 		));
 	}
+
+	CClipMap::ClearAllOfTypeThreadSafe(cm_geomtype::model);
+
 	return CArrayValue::Construct(ctx->m_pRuntime, std::move(models));
 }
 VARJUS_DEFINE_PROPERTY(WorldMapName, ctx, _this) {

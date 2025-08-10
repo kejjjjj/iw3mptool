@@ -1,0 +1,8 @@
+const exportPath = `${global.game_directory}\\models.json`;
+
+fn main()
+{	
+	const filtered = world.models.filter((model) => model.name.contains("veh"));
+
+	fs.write(exportPath, json.stringify({ data: filtered }, true));
+}

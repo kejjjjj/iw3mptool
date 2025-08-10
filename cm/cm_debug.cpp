@@ -1,5 +1,6 @@
 #include "cm_debug.hpp"
 #include "cm_brush.hpp"
+#include "cm_model.hpp"
 #include "cm_entity.hpp"
 #include "cmd/cmd.hpp"
 #include "dvar/dvar.hpp"
@@ -45,6 +46,8 @@ void CM_LoadDvars()
 	Dvar_RegisterBool("pm_coordinates", dvar_flags::saved, false, "show player coordinates");
 	Dvar_RegisterBool("pm_velocity", dvar_flags::saved, false, "show player velocity");
 	Dvar_RegisterBool("pm_hitbox", dvar_flags::saved, false, "show player hitbox (when in third person)");
+
+	Cmd_AddCommand("xm_load", hmm_f);
 
 }
 

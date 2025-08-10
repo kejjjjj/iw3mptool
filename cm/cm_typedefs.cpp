@@ -359,6 +359,117 @@ void cm_terrain::render2d()
 
 	}
 }
+
+bool cm_model::RB_MakeInteriorsRenderable(const cm_renderinfo& info) const
+{
+
+	std::vector<fvec3> points(3);
+
+	bool state = false;
+
+	for (const auto& tri : tris) {
+
+		if ((tri.plane[2] < 0.3f || tri.plane[2] > 0.7f) && info.only_bounces)
+			continue;
+
+		if (tri.a.dist(cgs->predictedPlayerState.origin) > info.draw_dist)
+			continue;
+
+		if (!CM_TriangleInView(&tri, info.frustum_planes, info.num_planes))
+			continue;
+
+		if (RB_CheckTessOverflow(num_verts, 3 * (num_verts - 2)))
+			RB_TessOverflow(true, info.depth_test);
+
+		vec4_t c =
+		{
+			tri.color[0],
+			tri.color[1],
+			tri.color[2],
+			info.alpha
+		};
+
+		if (info.only_bounces) {
+			float n = tri.plane[2];
+
+			if (n > 0.7f || n < 0.3f)
+				n = 0.f;
+			else
+				n = 1.f - (n - 0.3f) / (0.7f - 0.3f);
+
+			c[0] = 1.f - n;
+			c[1] = n;
+			c[2] = 0.f;
+		}
+
+
+		points[0] = (tri.a);
+		points[1] = (tri.b);
+		points[2] = (tri.c);
+
+		CM_MakeInteriorRenderable(points, c);
+
+		state = true;
+	}
+
+	return state;
+}
+bool cm_model::RB_MakeOutlinesRenderable(const cm_renderinfo& info, int& nverts) const
+{
+
+	if (info.only_elevators)
+		return false;
+
+	std::vector<fvec3> points(3);
+
+	bool state = false;
+
+	for (const auto& tri : tris) {
+
+		if ((tri.plane[2] < 0.3f || tri.plane[2] > 0.7f) && info.only_bounces)
+			continue;
+
+		if (tri.a.dist(cgs->predictedPlayerState.origin) > info.draw_dist)
+			continue;
+
+		if (!CM_TriangleInView(&tri, info.frustum_planes, info.num_planes))
+			continue;
+
+		if (RB_CheckTessOverflow(num_verts, 3 * (num_verts - 2)))
+			RB_TessOverflow(true, info.depth_test);
+
+		vec4_t c =
+		{
+			tri.color[0],
+			tri.color[1],
+			tri.color[2],
+			info.alpha
+		};
+
+		if (info.only_bounces) {
+			float n = tri.plane[2];
+
+			if (n > 0.7f || n < 0.3f)
+				n = 0.f;
+			else
+				n = 1.f - (n - 0.3f) / (0.7f - 0.3f);
+
+			c[0] = 1.f - n;
+			c[1] = n;
+			c[2] = 0.f;
+		}
+
+		points[0] = (tri.a);
+		points[1] = (tri.b);
+		points[2] = (tri.c);
+
+		nverts = CM_MakeOutlinesRenderable(points, c, info.depth_test, nverts);
+		state = true;
+	}
+
+	return state;
+}
+
 bool CM_IsMatchingFilter(const std::unordered_set<std::string>& filters, const char* material)
 {
 	std::string strMat = material;
