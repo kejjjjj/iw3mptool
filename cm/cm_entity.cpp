@@ -229,7 +229,7 @@ CBrushModel::CBrushModel(gentity_s* const g) : CGameEntity(g)
 
 	//terrain
 	cm_terrain terrain;
-	if (terrain.CM_LeafToGeometry(leaf, { "all " })) {
+	if (terrain.CM_LeafToGeometry(leaf, { "all" })) {
 		m_oBrushModels.emplace_back(std::make_unique<CTerrain>(g, leaf, terrain));
 	}
 
