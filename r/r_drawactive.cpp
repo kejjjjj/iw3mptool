@@ -22,7 +22,7 @@ static void CG_DrawCoordinates(float& y, const vec4_t color)
 		"pitch: %.6f", ps->origin[0], ps->origin[1], ps->origin[2], ps->viewangles[1], ps->viewangles[0]);
 	R_DrawTextWithEffects(buff, "fonts/bigdevFont", 0, y, 0.15f, 0.2f, 0, color, 3, vec4_t{ 1,0,0,0 });
 
-	y += 20.f;
+	y += 25.f;
 }
 static void CG_DrawVelocity(float& y, const vec4_t color)
 {
