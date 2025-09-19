@@ -15,10 +15,11 @@ static void CG_DrawCoordinates(float& y, const vec4_t color)
 
 	char buff[256];
 	sprintf_s(buff,
-		"x:     %.6f\n"
-		"y:     %.6f\n"
-		"z:     %.6f\n"
-		"yaw: %.6f", ps->origin[0], ps->origin[1], ps->origin[2], ps->viewangles[1]);
+		"x:       %.6f\n"
+		"y:       %.6f\n"
+		"z:       %.6f\n"
+		"yaw:   %.6f\n"
+		"pitch: %.6f", ps->origin[0], ps->origin[1], ps->origin[2], ps->viewangles[1], ps->viewangles[0]);
 	R_DrawTextWithEffects(buff, "fonts/bigdevFont", 0, y, 0.15f, 0.2f, 0, color, 3, vec4_t{ 1,0,0,0 });
 
 	y += 20.f;
@@ -47,7 +48,7 @@ void CG_DrawActive()
 	static dvar_s* cm_showCollisionDist = Dvar_FindMalleableVar("cm_showCollisionDist");
 	static dvar_s* pm_coordinates = Dvar_FindMalleableVar("pm_coordinates");
 	static dvar_s* pm_velocity = Dvar_FindMalleableVar("pm_velocity");
-	static dvar_s* developer = Dvar_FindMalleableVar("developer");
+	static dvar_s* pm_debug = Dvar_FindMalleableVar("pm_debug");
 
 	float y = 45.f;
 
@@ -61,7 +62,7 @@ void CG_DrawActive()
 		CG_DrawVelocity(y, col);
 	}
 
-	if (developer && developer->current.enabled) {
+	if (pm_debug && pm_debug->current.enabled) {
 		CM_DrawDebug(y, col);
 	}
 	if (cm_showCollisionDist && cm_entityInfo && cm_entityInfo->current.integer) {

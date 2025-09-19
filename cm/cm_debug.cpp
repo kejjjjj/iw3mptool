@@ -46,6 +46,7 @@ void CM_LoadDvars()
 	Dvar_RegisterBool("pm_coordinates", dvar_flags::saved, false, "show player coordinates");
 	Dvar_RegisterBool("pm_velocity", dvar_flags::saved, false, "show player velocity");
 	Dvar_RegisterBool("pm_hitbox", dvar_flags::saved, false, "show player hitbox (when in third person)");
+	Dvar_RegisterBool("pm_debug", dvar_flags::saved, false, "show debug information");
 
 	Cmd_AddCommand("xm_load", hmm_f);
 
