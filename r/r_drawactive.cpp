@@ -73,6 +73,25 @@ void CG_DrawActive()
 
 	}
 
+	//rectDef_s rect{ 320, 240, 100, 20, 0, 0 };
+	//vec4_t ccol{1,1,1,1};
+	//__asm {
+	//	push esi;
+	//	push eax;
+
+	//	push 0;
+	//	lea eax, rect;
+	//	push eax;
+	//	push 0;
+	//	lea eax, ccol;
+	//	mov esi, 0x4424B0;
+	//	call esi;
+	//	add esp, 0xC;
+
+	//	pop eax;
+	//	pop esi;
+	//}
+
 	Varjus_ExecFrame();
 
 	return hooktable::find<void>(HOOK_PREFIX(__func__))->call();

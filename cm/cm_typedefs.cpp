@@ -485,19 +485,23 @@ bool CM_IsMatchingFilter(const std::unordered_set<std::string>& filters, const c
 
 void CM_LoadMap()
 {
-
+	
 	CClipMap::ClearThreadSafe();
 
 	std::unique_lock<std::mutex> lock(CClipMap::GetLock());
 
-	for(const auto i : std::views::iota(0u, cm->numBrushes))
-		CM_LoadBrushWindingsToClipMap(&cm->brushes[i]);
+	for (const auto i : std::views::iota(0u, cm->numBrushes))
+		CM_LoadBrushWindingsToClipMap(i);
 
 	CM_DiscoverTerrain({ "all" });
 
 	for (const auto i : std::views::iota(0u, gfxWorld->dpvs.smodelCount)) {
 		CM_AddModel(&gfxWorld->dpvs.smodelDrawInsts[i]);
 	}
+
+	CGentities::CM_LoadAllEntitiesToClipMapWithFilter({ "all" });
+	
+
 }
 std::unordered_set<std::string> CM_TokenizeFilters(const std::string& filters)
 {

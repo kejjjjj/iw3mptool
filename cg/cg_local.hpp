@@ -4956,6 +4956,13 @@ struct WeaponDef
 	float adsDofStart;
 	float adsDofEnd;
 };
+struct StringTable
+{
+	const char* name;
+	int columnCount;
+	int rowCount;
+	const char** values;
+};
 struct __declspec(align(4)) kbutton_t
 {
 	int down[2];

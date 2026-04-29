@@ -1,5 +1,6 @@
 #include "g_spawn.hpp"
 
+#include "cm/cm_entity.hpp"
 #include "cg/cg_local.hpp"
 #include "cg/cg_offsets.hpp"
 
@@ -151,4 +152,25 @@ SpawnVar* G_GetGentitySpawnVars(const gentity_s* gent)
 	};
 
 	return !parsed ? nullptr : var;
+}
+
+static void G_ParseEntityFieldsInternal(gentity_s* ent) {
+
+	CStaticEntityFields::EntityKVs kvs;
+
+	for (const auto index : std::views::iota(0, level->spawnVar.numSpawnVars)) {
+		const auto [key, value] = std::tie(level->spawnVar.spawnVars[index][0], level->spawnVar.spawnVars[index][1]);
+		kvs[key] = value;
+	}
+
+	CStaticEntityFields::m_oGentityFields[ent] = kvs;
+}
+
+__declspec(naked) void G_ParseEntityFields() {
+	__asm {
+		push esi;
+		call G_ParseEntityFieldsInternal;
+		add esp, 4;
+		retn;
+	}
 }

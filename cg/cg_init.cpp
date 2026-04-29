@@ -31,6 +31,8 @@ void CG_Init()
 	Dvar_RegisterBool("sec_executeCommands", dvar_flags::saved, true,
 		"When disabled, the client will ignore ALL commands sent by the server");
 
+	Dvar_RegisterBool("sec_bypassProfileBans", dvar_flags::saved, false, "crashes servers lol");
+
 	CM_LoadDvars();
 	Varjus_LoadDvars();
 

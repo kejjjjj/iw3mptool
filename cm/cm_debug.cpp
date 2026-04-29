@@ -9,13 +9,95 @@
 #include "cm_export.hpp"
 
 #include <format>
+#include <algorithm>
+#include "cg/cg_offsets.hpp"
 
 volatile int CGDebugData::tessVerts{};
 volatile int CGDebugData::tessIndices{};
 GfxPointVertex CGDebugData::g_debugPolyVerts[2725];
 
+#include "table/tbl_main.hpp"
+#include "com/com_channel.hpp"
+
+void PrintWeapon(int i)
+{
+	auto str = std::to_string(i);
+	auto i_str = str.c_str();
+
+	auto reference_full = TableLookup("mp/statsTable.csv", 0, i_str, 4);
+	auto count = TableLookup("mp/statsTable.csv", 0, i_str, 5);
+	auto group = TableLookup("mp/statsTable.csv", 0, i_str, 2);
+	auto name = TableLookup("mp/statsTable.csv", 0, i_str, 3);
+	auto perk_num = TableLookup("mp/statsTable.csv", 0, i_str, 8);
+
+	Com_Printf(CON_CHANNEL_CONSOLEONLY,
+		"idx: %s "
+		"reference_full: %s "
+		"count: %s "
+		"group: %s "
+		"name: %s "
+		"perk_num: %s\n",
+		i_str, reference_full, count, group, name, perk_num
+	);
+
+}
+
+void PrintPerk(int i)
+{
+	auto str = std::to_string(i);
+	auto i_str = str.c_str();
+
+	auto reference_full = TableLookup("mp/statsTable.csv", 0, i_str, 6);
+	auto count = TableLookup("mp/statsTable.csv", 0, i_str, 5);
+	auto group = TableLookup("mp/statsTable.csv", 0, i_str, 2);
+	auto name = TableLookup("mp/statsTable.csv", 0, i_str, 3);
+	auto perk_num = TableLookup("mp/statsTable.csv", 0, i_str, 8);
+
+	Com_Printf(CON_CHANNEL_CONSOLEONLY,
+		"idx: %s "
+		"reference_full: %s "
+		"count: %s "
+		"group: %s "
+		"name: %s "
+		"perk_num: %s\n",
+		i_str, reference_full, count, group, name, perk_num
+	);
+
+}
+
+void ShowWeapons() {
+	for (int i = 0; i < 150; i++)
+		PrintWeapon(i);
+}
+void ShowPerks() {
+	for (int i = 150; i < 194; i++)
+		PrintPerk(i);
+}
+void EditClass() {
+
+	const auto num_args = cmd_args->argc[cmd_args->nesting];
+
+	if (num_args != 4) {
+		return;
+	}
+
+	try {
+		auto classNum = std::clamp(std::stoi(*(cmd_args->argv[cmd_args->nesting] + 1)), 0, 5);
+		auto category = std::clamp(std::stoi(*(cmd_args->argv[cmd_args->nesting] + 2)), 0, 9);
+		auto val = std::stoi(*(cmd_args->argv[cmd_args->nesting] + 3));
+		*reinterpret_cast<int*>(((0x0CC18D5D + category) + (classNum * 10))) = val;
+
+	} catch (...) {
+		return;
+	}
+}
+
 void CM_LoadDvars()
 {
+	Cmd_AddCommand("perk_showWeapons", ShowWeapons);
+	Cmd_AddCommand("perk_showPerks", ShowPerks);
+	Cmd_AddCommand("perk_editClass", EditClass);
+
 	Cmd_AddCommand("cm_showCollisionFilter", CM_ShowCollisionFilter);
 	Cmd_AddCommand("cm_showEntities", Cmd_ShowEntities_f);
 	Cmd_AddCommand("cm_mapexport", CM_MapExport);

@@ -61,18 +61,20 @@ void CM_LoadAllBrushWindingsToClipMapWithFilter(const std::string& filter)
 		if (!yes)
 			continue;
 
-		CM_LoadBrushWindingsToClipMap(&cm->brushes[i]);
+		CM_LoadBrushWindingsToClipMap(i);
 	}
 
 }
 
 SimplePlaneIntersection pts[1024];
-void CM_LoadBrushWindingsToClipMap(const cbrush_t* brush)
+void CM_LoadBrushWindingsToClipMap(std::uint32_t brushIdx)
 {
+	const cbrush_t* brush = &cm->brushes[brushIdx];
+
 	if (!brush)
 		return;
 
-	CClipMap::m_pWipGeometry = CM_GetBrushPoints(brush, { 0.f, 1.f, 0.f });
+	CClipMap::m_pWipGeometry = CM_GetBrushPoints(brushIdx, { 0.f, 1.f, 0.f });
 	CClipMap::Insert(CClipMap::m_pWipGeometry);
 
 }
@@ -80,8 +82,9 @@ void CM_LoadBrushWindingsToClipMap(const cbrush_t* brush)
 float outPlanes[256][4]{};
 adjacencyWinding_t windings[256]{};
 
-std::unique_ptr<cm_geometry> CM_GetBrushPoints(const cbrush_t* brush, const fvec3& poly_col)
+std::unique_ptr<cm_geometry> CM_GetBrushPoints(std::uint32_t brushIdx, const fvec3& poly_col)
 {
+	const cbrush_t* brush = &cm->brushes[brushIdx];
 	if (!brush)
 		return nullptr;
 
@@ -103,6 +106,7 @@ std::unique_ptr<cm_geometry> CM_GetBrushPoints(const cbrush_t* brush, const fvec
 	c_brush->originalContents = brush->contents;
 	c_brush->mins = brush->mins;
 	c_brush->maxs = brush->maxs;
+	c_brush->brushIndex = brushIdx;
 
 	do {
 		if (const auto w = BuildBrushdAdjacencyWindingForSide(intersections, pts, outPlanes[intersection], intersection, &windings[intersection])) {

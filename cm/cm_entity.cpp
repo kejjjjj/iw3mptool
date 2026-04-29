@@ -24,8 +24,11 @@
 #include <ranges>
 #include <array>
 #include <string>
+#include <vector>
 
 using namespace std::string_literals;
+
+std::unordered_map<gentity_s*, CStaticEntityFields::EntityKVs> CStaticEntityFields::m_oGentityFields;
 
 void Cmd_ShowEntities_f()
 {
@@ -64,9 +67,6 @@ void CGentities::CM_LoadAllEntitiesToClipMapWithFilter([[maybe_unused]]const std
 
 	const auto filters = CM_TokenizeFilters(filter);
 
-	//reset spawnvars
-	G_ResetEntityParsePoint();
-
 	for (const auto i : std::views::iota(0, level->num_entities)) {
 
 		auto gentity = &level->gentities[i];
@@ -99,21 +99,11 @@ CGameEntity::~CGameEntity()
 
 void CGameEntity::ParseEntityFields()
 {
-	const auto spawnVar = G_GetGentitySpawnVars(m_pOwner);
-
-	if (!spawnVar)
+	if (!CStaticEntityFields::m_oGentityFields.contains(m_pOwner)) {
 		return;
-
-	for (const auto index : std::views::iota(0, spawnVar->numSpawnVars)) {
-		const auto [key, value] = std::tie(spawnVar->spawnVars[index][0], spawnVar->spawnVars[index][1]);
-
-		for (auto f = ent_fields; f->name; ++f) {
-			if (!strcmp(f->name, key)) {
-				m_oEntityFields[key] = value;
-			}
-		}
 	}
 
+	m_oEntityFields = CStaticEntityFields::m_oGentityFields.at(m_pOwner);
 }
 
 std::unique_ptr<CGameEntity> CGameEntity::CreateEntity(gentity_s* const g)
@@ -203,28 +193,65 @@ void CGameEntity::RB_RenderConnections([[maybe_unused]]const cm_renderinfo& info
 	}
 }
 
+#include <iostream>
 /***********************************************************************
  > BRUSHMODELS
 ***********************************************************************/
+
+std::vector<std::uint16_t> GetLeafBrushNodes(cLeafBrushNode_s* nodes, [[maybe_unused]] std::int32_t nodeIndex, [[maybe_unused]] const fvec3& pos) {
+
+	cLeafBrushNode_s* node = &nodes[nodeIndex];
+
+	std::vector<std::uint16_t> resultNodes;
+
+	if (node->leafBrushCount > 0) {
+		for (int i = 0; i < node->leafBrushCount; i++) {
+			unsigned short brushIndex = node->data.leaf.brushes[i];
+			resultNodes.push_back(brushIndex);
+		}
+		return resultNodes;
+	}
+
+	return resultNodes;
+
+	//idk...
+	//const auto d = pos[node->axis] - node->data.children.dist;
+
+	//std::int32_t side{};
+	//if (d < -node->data.children.range)
+	//	side = 0;
+	//else if (d > node->data.children.range)
+	//	side = 1;
+	//else {
+	//	const auto v1 = GetLeafBrushNodes(nodes, node->data.children.childOffset[0], pos);
+	//	const auto v2 = GetLeafBrushNodes(nodes, node->data.children.childOffset[1], pos);
+
+	//	resultNodes.insert(resultNodes.end(), v1.begin(), v1.end());
+	//	resultNodes.insert(resultNodes.end(), v2.begin(), v2.end());
+	//	return resultNodes;
+	//}
+
+	//return GetLeafBrushNodes(nodes, node->data.children.childOffset[side], pos);
+}
+
 CBrushModel::CBrushModel(gentity_s* const g) : CGameEntity(g) 
 {
 	assert(IsBrushModel());
 
-	const auto leaf = &cm->cmodels[g->s.index.brushmodel].leaf;
-	const auto& leafBrushNode = cm->leafbrushNodes[leaf->leafBrushNode];
-	const auto numBrushes = leafBrushNode.leafBrushCount;
-
+	auto& cmodel = cm->cmodels[g->s.index.brushmodel];
+	const auto leaf = &cmodel.leaf;
 
 	//brush
-	if (numBrushes > 0) {
-		for (const auto brushIndex : std::views::iota(0, numBrushes)) {
-			const auto brushWorldIndex = leafBrushNode.data.leaf.brushes[brushIndex];
-			if (brushWorldIndex > cm->numBrushes)
-				break;
+	if (leaf->brushContents) {
 
-			m_oBrushModels.emplace_back(std::make_unique<CBrush>(g, &cm->brushes[brushWorldIndex]));
+		const auto indices = GetLeafBrushNodes(cm->leafbrushNodes, leaf->leafBrushNode, (fvec3(g->r.absmin) + fvec3(g->r.absmax)) * 0.5f);
+
+		if (indices.size()) {
+			for (const auto brushWorldIndex : indices) {
+				m_oBrushModels.emplace_back(std::make_unique<CBrush>(g, brushWorldIndex));
+			}
+			return;
 		}
-		return;
 	}
 
 	//terrain
@@ -298,14 +325,15 @@ fvec3 CBrushModel::CIndividualBrushModel::GetCenter() const noexcept
 	return m_pOwner->r.currentOrigin;
 }
 
-CBrushModel::CBrush::CBrush(gentity_s* const g, const cbrush_t* const brush) : CIndividualBrushModel(g), m_pSourceBrush(brush)
-{
+CBrushModel::CBrush::CBrush(gentity_s* const g, std::int32_t brushIdx) 
+	: CIndividualBrushModel(g), m_uBrushIndex(brushIdx), m_pSourceBrush(&cm->brushes[brushIdx]) {
 	assert(m_pSourceBrush != nullptr);
 
 	const vec3_t col = { 1.f, 0.f, 0.f };
 
 	//questionable for sure!
-	m_oOriginalGeometry = *dynamic_cast<cm_brush*>(&*CM_GetBrushPoints(m_pSourceBrush, col));
+	m_oOriginalGeometry = *dynamic_cast<cm_brush*>(&*CM_GetBrushPoints(brushIdx, col));
+	m_oOriginalGeometry.brushIndex = brushIdx;
 	m_oCurrentGeometry = m_oOriginalGeometry;
 
 	OnPositionChanged(g->r.currentOrigin, g->r.currentAngles);
@@ -322,6 +350,14 @@ void CBrushModel::CBrush::OnPositionChanged(const fvec3& newOrigin, const fvec3&
 		for (auto& point : winding.points) {
 			point = VectorRotate(point + newOrigin, newAngles, m_oCurrentGeometry.origin);
 		}
+	}
+
+	const auto center = GetCenter();
+
+	for (auto& tri : m_oCurrentGeometry.triangles) {
+		tri.a = VectorRotate(tri.a + newOrigin, newAngles, center);
+		tri.b = VectorRotate(tri.b + newOrigin, newAngles, center);
+		tri.c = VectorRotate(tri.c + newOrigin, newAngles, center);
 	}
 
 	m_oCurrentGeometry.mins = m_pOwner->r.absmin;

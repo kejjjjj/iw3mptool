@@ -21,6 +21,11 @@ enum class entity_info_type
 	eit_verbose
 };
 
+struct CStaticEntityFields {
+	using EntityKVs = std::unordered_map<std::string, std::string>;
+	static std::unordered_map<gentity_s*, EntityKVs> m_oGentityFields;
+};
+
 void Cmd_ShowEntities_f();
 
 class CGameEntity
@@ -45,10 +50,11 @@ public:
 	[[nodiscard]] constexpr gentity_s* GetOwner() const noexcept { return m_pOwner; }
 	[[nodiscard]] constexpr auto& GetFields() const noexcept { return m_oEntityFields; }
 
+	[[nodiscard]] bool IsBrushModel() const noexcept;
+
 protected:
 
 
-	[[nodiscard]] bool IsBrushModel() const noexcept;
 
 	fvec3& m_vecOrigin;
 	fvec3& m_vecAngles;
@@ -101,7 +107,7 @@ public:
 
 	struct CBrush : public CIndividualBrushModel
 	{
-		CBrush(gentity_s* const g, const cbrush_t* const brush);
+		CBrush(gentity_s* const g, std::int32_t brushIdx);
 		~CBrush();
 
 		[[nodiscard]] bool RB_MakeInteriorsRenderable(const cm_renderinfo& info) const override;
@@ -112,10 +118,14 @@ public:
 
 		[[nodiscard]] int GetNumVerts() const noexcept override { return m_oCurrentGeometry.num_verts; }
 
+
+		std::int32_t m_uBrushIndex;
+
 	private:
 		cm_brush m_oOriginalGeometry;
 		cm_brush m_oCurrentGeometry;
 		const cbrush_t* const m_pSourceBrush = {};
+
 	};
 
 	struct CTerrain : public CIndividualBrushModel
@@ -138,7 +148,7 @@ public:
 		const cLeaf_t* const m_pSourceLeaf = {};
 	};
 
-private:
+//private:
 	std::vector<std::unique_ptr<CIndividualBrushModel>> m_oBrushModels;
 };
 

@@ -2,6 +2,7 @@
 #include <type_traits>
 #include <string>
 #include <Windows.h>
+#include <random>
 
 template<typename T>
 concept MemoryAddress_t = std::is_integral_v<T> || std::is_pointer_v<T>;
@@ -40,4 +41,21 @@ namespace Engine::Tools
 		return write_bytes(dst, "\x90\x90\x90\x90\x90"s);
 	}
 	
+	template<typename T>
+	concept IsArithmetic = std::is_arithmetic_v<T>;
+
+	inline std::random_device rd;
+	inline std::mt19937 mt(rd());
+
+	template<IsArithmetic T>
+	inline T random(T range) { //0 -> HI
+		std::uniform_real_distribution num{ static_cast<float>(0), static_cast<float>(range) };
+		return static_cast<T>(num(mt));
+	}
+	template<IsArithmetic T>
+	inline T random(T min, T range) { //LO -> HI
+		std::uniform_real_distribution num{ static_cast<float>(min), static_cast<float>(range) };
+		return static_cast<T>(num(mt));
+	}
+
 }

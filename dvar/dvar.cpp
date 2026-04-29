@@ -134,7 +134,7 @@ void CG_SetClientDvarFromServer(const char* dvarname, const char* value, [[maybe
 
                 }
 
-                std::cout << "Server tried to execute: " << std::quoted(std::format("{} {}", dvarname, value)) << '\n';
+                //std::cout << "Server tried to execute: " << std::quoted(std::format("{} {}", dvarname, value)) << '\n';
                 return;
             }
             else

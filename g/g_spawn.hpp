@@ -7,3 +7,4 @@ void G_ResetEntityParsePoint();
 
 struct SpawnVar* G_GetGentitySpawnVars(const struct gentity_s* gent);
 
+void G_ParseEntityFields();

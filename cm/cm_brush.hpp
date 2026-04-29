@@ -11,7 +11,7 @@ struct GfxViewParms;
 
 void CM_ShowCollisionFilter();
 
-[[nodiscard]] std::unique_ptr<cm_geometry> CM_GetBrushPoints(const cbrush_t* brush, const fvec3& poly_col);
+[[nodiscard]] std::unique_ptr<cm_geometry> CM_GetBrushPoints(std::uint32_t brushIdx, const fvec3& poly_col);
 [[nodiscard]] adjacencyWinding_t* BuildBrushdAdjacencyWindingForSide(int ptCount, SimplePlaneIntersection* pts, float* sideNormal, int planeIndex, adjacencyWinding_t* optionalOutWinding);
 [[nodiscard]] int GetPlaneIntersections(const float** planes, int planeCount, SimplePlaneIntersection* OutPts);
 [[nodiscard]] int BrushToPlanes(const cbrush_t* brush, float(*outPlanes)[4]);
@@ -23,7 +23,7 @@ void CM_ShowCollisionFilter();
 [[nodiscard]] std::vector<fvec3> CM_CreateHitbox(const fvec3& mins, const fvec3& maxs);
 
 void CM_LoadAllBrushWindingsToClipMapWithFilter(const std::string& filter);
-void CM_LoadBrushWindingsToClipMap(const cbrush_t* brush);
+void CM_LoadBrushWindingsToClipMap(std::uint32_t brushIdx);
 void CM_BuildAxialPlanes(float(*planes)[6][4], const cbrush_t* brush);
 void CM_GetPlaneVec4Form(const cbrushside_t* sides, const float(*axialPlanes)[4], unsigned int index, float* expandedPlane);
 

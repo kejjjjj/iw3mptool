@@ -70,6 +70,9 @@
     <Filter Include="Source Files\cl">
       <UniqueIdentifier>{ae5e0d8d-1585-4d66-9100-627af8aeecb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\table">
+      <UniqueIdentifier>{092ba23d-ee8c-414e-a21f-30bd330f04d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cg\cg_init.hpp">
@@ -216,6 +219,9 @@
     <ClInclude Include="cl\cl_main.hpp">
       <Filter>Source Files\cl</Filter>
     </ClInclude>
+    <ClInclude Include="table\tbl_main.hpp">
+      <Filter>Source Files\table</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -358,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="cl\cl_main.cpp">
       <Filter>Source Files\cl</Filter>
+    </ClCompile>
+    <ClCompile Include="table\tbl_main.cpp">
+      <Filter>Source Files\table</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

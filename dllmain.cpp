@@ -28,6 +28,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, [[maybe_unused
             FILE* _con = 0;
             AllocConsole();
             freopen_s(&_con, "CONOUT$", "w", stdout);
+            printf("hello world!\n");
 #endif
             CG_Init();
 

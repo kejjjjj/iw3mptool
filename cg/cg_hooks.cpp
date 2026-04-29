@@ -10,6 +10,7 @@
 #include "g/g_trigger.hpp"
 #include "menu/menu_parse.hpp"
 #include "cl/cl_main.hpp"
+#include "g/g_spawn.hpp"
 
 static void CG_CreateHooksInternal();
 void CG_CreateHooks()
@@ -30,12 +31,13 @@ void CG_CreateHooksInternal()
 	hooktable::overwriter<void>(HOOK_PREFIX("__asm_adjacency_winding"), 0x57D86C, __brush::__asm_adjacency_winding);
 
 	hooktable::overwriter<void>(HOOK_PREFIX("G_Trigger"), 0x4E1130, G_Trigger);
+	hooktable::overwriter<void>(HOOK_PREFIX("G_ParseEntityFields"), 0x4DFD88, G_ParseEntityFields);
 
 	hooktable::preserver<void>(HOOK_PREFIX("CG_SetClientDvarFromServerASM"), 0x44BD90, CG_SetClientDvarFromServerASM);
 	hooktable::preserver<void>(HOOK_PREFIX("Script_AddTextWrapper"), 0x54D5D0, Script_AddTextWrapper);
 	hooktable::preserver<void>(HOOK_PREFIX("Script_ExecHandler"), 0x54D570, Script_ExecHandler);
 	hooktable::preserver<void>(HOOK_PREFIX("Script_ConditionalExecHandler"), 0x54D620, Script_ConditionalExecHandler);
-
+	
 	//if (dx && dx->device)
 	//	hooktable::preserver<long, IDirect3DDevice9*>(HOOK_PREFIX("R_EndScene"),
 	//		reinterpret_cast<size_t>((*reinterpret_cast<PVOID**>(dx->device))[42]), R_EndScene);

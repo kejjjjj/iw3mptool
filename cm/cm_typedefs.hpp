@@ -116,40 +116,30 @@ struct cm_winding
 	bool is_bounce = {};
 	bool is_elevator = {};
 
-	inline fvec3 get_mins() const noexcept
-	{
-		std::vector<float> x, y, z;
+	inline fvec3 get_mins() const noexcept {
+		if (points.empty()) return {};
 
+		float minx = points[0].x, miny = points[0].y, minz = points[0].z;
 		for (auto& p : points) {
-			x.push_back(p.x);
-			y.push_back(p.y);
-			z.push_back(p.z);
-
+			minx = std::min(minx, p.x);
+			miny = std::min(miny, p.y);
+			minz = std::min(minz, p.z);
 		}
-
-		const float _x = *std::min_element(x.begin(), x.end());
-		const float _y = *std::min_element(y.begin(), y.end());
-		const float _z = *std::min_element(z.begin(), z.end());
-
-		return { _x, _y, _z };
+		return { minx, miny, minz };
 	}
-	inline fvec3 get_maxs() const noexcept
-	{
-		std::vector<float> x, y, z;
 
+	inline fvec3 get_maxs() const noexcept {
+		if (points.empty()) return {};
+
+		float maxx = points[0].x, maxy = points[0].y, maxz = points[0].z;
 		for (auto& p : points) {
-			x.push_back(p.x);
-			y.push_back(p.y);
-			z.push_back(p.z);
-
+			maxx = std::max(maxx, p.x);
+			maxy = std::max(maxy, p.y);
+			maxz = std::max(maxz, p.z);
 		}
-
-		const float _x = *std::max_element(x.begin(), x.end());
-		const float _y = *std::max_element(y.begin(), y.end());
-		const float _z = *std::max_element(z.begin(), z.end());
-
-		return { _x, _y, _z };
+		return { maxx, maxy, maxz };
 	}
+
 	inline fvec3 get_center() const noexcept {
 
 		float xSum{}, ySum{}, zSum{};
@@ -225,9 +215,10 @@ struct cm_brush : public cm_geometry
 	[[nodiscard]] bool RB_MakeOutlinesRenderable(const cm_renderinfo& info, int& nverts) const override;
 
 	friend void __cdecl adjacency_winding(adjacencyWinding_t* w, float* points, float* normal, unsigned int i0, unsigned int i1, unsigned int i2);
-	friend std::unique_ptr<cm_geometry> CM_GetBrushPoints(const cbrush_t* brush, const fvec3& poly_col);
+	friend std::unique_ptr<cm_geometry> CM_GetBrushPoints(std::uint32_t brushIdx, const fvec3& poly_col);
 	friend class IValue* WorldBrushes(Varjus::CRuntimeContext* const ctx, [[maybe_unused]] IValue* _this);
 	cbrush_t* brush = {};
+	std::int32_t brushIndex{};
 
 protected:
 	int map_export(std::stringstream& o, int index) override;
@@ -320,8 +311,8 @@ class CClipMap
 
 public:
 
-	friend void CM_LoadBrushWindingsToClipMap(const cbrush_t* brush);
-	friend std::unique_ptr<cm_geometry> CM_GetBrushPoints(const cbrush_t* brush, const fvec3& poly_col);
+	friend void CM_LoadBrushWindingsToClipMap(std::uint32_t brushIdx);
+	friend std::unique_ptr<cm_geometry> CM_GetBrushPoints(std::uint32_t brushIdx, const fvec3& poly_col);
 	friend void __cdecl adjacency_winding(adjacencyWinding_t* w, float* points, float* normal, unsigned int i0, unsigned int i1, unsigned int i2);
 
 	static void Insert(GeometryPtr_t& geom);

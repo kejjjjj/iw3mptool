@@ -7,6 +7,8 @@
 #include "com/com_error.hpp"
 #include "fs/fs_globals.hpp"
 #include "fs/fs_io.hpp"
+#include "cm_entity.hpp"
+#include "scr/scr_functions.hpp"
 
 #include <fstream>
 
@@ -28,7 +30,8 @@ static void CM_WriteHeader(std::stringstream& f)
 	f << "\"bouncefraction\" " "\".7\"" << '\n';
 	f << "\"classname\" \"worldspawn\"\n";
 }
-static void CM_WriteAllBrushes(std::stringstream& o)
+#include <iostream>
+static void CM_WriteAllBrushes(std::stringstream& o, const std::unordered_set<std::int32_t>& ignoreBrushes)
 {
 
 	if (CClipMap::Size() == 0) {
@@ -45,16 +48,55 @@ static void CM_WriteAllBrushes(std::stringstream& o)
 			brushIndex = 1;
 			//end brushes, start entities
 			o << "}\n";
+		} else if (geom->type() == cm_geomtype::brush && ignoreBrushes.contains(geom->AsBrush()->brushIndex)) {
+			return;
 		}
 
 		brushIndex = geom->map_export(o, brushIndex);
 	});
 
-
-
 	if (!entity_start) {
 		o << "}\n";
+		brushIndex = 1;
 	}
+
+	CGentities::ForEach([&](GentityPtr_t& ptr) {
+		const auto g = ptr->GetOwner();
+
+		if (!g->classname || ptr->GetFields().empty())
+			return;
+
+		if (const auto bm = dynamic_cast<CBrushModel*>(ptr.get())) {
+
+			for (auto& ibm : bm->m_oBrushModels) {
+				o << "// entity " << brushIndex++ << '\n';
+				o << "{\n";
+
+				for (const auto& [k, v] : ptr->GetFields()) {
+					if (k == "model")
+						continue;
+
+					o << std::format("\"{}\" \"{}\"\n", k, v);
+				}
+
+				const_cast<cm_geometry&>(ibm->GetSource()).map_export(o, 0);
+
+				o << "}\n";
+			}
+		} else {
+			o << "// entity " << brushIndex++ << '\n';
+			o << "{\n";
+
+			for (const auto& [k, v] : ptr->GetFields()) {
+				if (k == "model")
+					continue;
+
+				o << std::format("\"{}\" \"{}\"\n", k, v);
+			}
+
+			o << "}\n";
+		}
+	});
 
 }
 
@@ -62,10 +104,21 @@ void CM_WriteInOrder(std::stringstream& o)
 {
 	CM_WriteHeader(o);
 
+
+	std::unordered_set<std::int32_t> ignoreBrushes;
+
+	CGentities::ForEach([&ignoreBrushes](GentityPtr_t& ptr) {
+		if (const auto asBrushmodel = dynamic_cast<CBrushModel*>(ptr.get())) {
+			for (const auto& m : asBrushmodel->m_oBrushModels) {
+				if (m->GetSource().type() == cm_geomtype::brush) {
+					ignoreBrushes.insert(dynamic_cast<CBrushModel::CBrush*>(m.get())->m_uBrushIndex);
+				}
+			}
+		}
+	});
+
 	std::unique_lock<std::mutex> lock(CClipMap::GetLock());
-	CM_WriteAllBrushes(o);
-
-
+	CM_WriteAllBrushes(o, ignoreBrushes);
 
 }
 
